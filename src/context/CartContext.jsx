@@ -6,13 +6,15 @@ const CartContextProvider = (props) => {
   const [cartItems, setCartItems] = useState([]);
   const [search, setSearch] = useState("");
 
+  const [category, setCategory] = useState("");
+
+  // Adding cart items to localstorage
   useEffect(() => {
     const items = JSON.parse(localStorage.getItem("cartItems"));
     if (items) {
       setCartItems(items);
     }
   }, []);
-
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
@@ -21,20 +23,25 @@ const CartContextProvider = (props) => {
     setSearch(e.target.value);
   };
 
+  // adding items to cart
   const addItem = (item) => {
-    setCartItems((prevCartItems) => [...prevCartItems, item]);
+    const itemInCart = cartItems.find((cartitem) => cartitem.id === item.id);
+
+    if (!itemInCart) {
+      setCartItems((pre) => [...pre, item]);
+    }else {
+      return
+    }
+
+    console.log(itemInCart);
   };
 
+  // removing item from cart
   const removeItem = (id) => {
     setCartItems((prevCartItems) =>
       prevCartItems.filter((item) => item.id !== id)
     );
   };
-
-  const cartValue = cartItems.reduce(
-    (accumulator, item) => accumulator + item.price,
-    0
-  );
 
   return (
     <CartContext.Provider
@@ -42,9 +49,10 @@ const CartContextProvider = (props) => {
         cartItems,
         addItem,
         removeItem,
-        cartValue,
         search,
         handleSearch,
+        category,
+        setCategory,
       }}
     >
       {props.children}

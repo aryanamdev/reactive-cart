@@ -2,24 +2,21 @@ import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "../context/CartContext.jsx";
 import SkeletonCard from "./skeletons/SkeletonCard.jsx";
 
-
 export default function ProductCard() {
-  const { addItem, search } = useContext(CartContext);
+  const { addItem, search, category } = useContext(CartContext);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchProducts = () => {
-    fetch("https://fakestoreapi.com/products/")
-      .then((res) => res.json())
-      .then((json) => {
-        setProducts(json);
-        setLoading(false);
-      });
+  const fetchProducts = async () => {
+    const data = await fetch(`https://fakestoreapi.com/products/`);
+    const json = await data.json();
+    setProducts(json)
+    setLoading(false)
   };
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [category]);
 
   const filteredProducts = products.filter((val) => {
     return val.title.toLowerCase().includes(search.toLowerCase());
@@ -29,7 +26,7 @@ export default function ProductCard() {
     return (
       <>
         {[...Array(20)].map((val) => (
-          <SkeletonCard />
+          <SkeletonCard key={Math.random()} />
         ))}
       </>
     );
@@ -44,7 +41,12 @@ export default function ProductCard() {
           className="flex flex-col w-80 shadow-xl hover:shadow-2xl cursor-pointer rounded-lg"
         >
           <div className="flex justify-center">
-            <img src={val.image} className="object-cover h-60" alt="" />
+            <img
+              loading="lazy"
+              src={val.image}
+              className="object-cover h-60"
+              alt=""
+            />
           </div>
           <div className="p-8 flex flex-col gap-4">
             <h1 className="text-xl">{val.title}</h1>

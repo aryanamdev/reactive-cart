@@ -16,13 +16,6 @@ const Header = () => {
           <li className="text-gray-300">
             <Link to="/">Home</Link>
           </li>
-          <input
-            className="p-3 lg:w-3/12 text-black rounded-md bg-gray-200"
-            onChange={handleSearch}
-            value={search}
-            type="text"
-            placeholder="Search Product"
-          />
           <li className="p-3 text-gray-300 bg-slate-500 rounded-md">
             <Link to="/cart" className="flex items-center gap-2">
               <svg
