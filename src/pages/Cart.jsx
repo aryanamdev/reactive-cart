@@ -40,7 +40,7 @@ const Cart = () => {
                 <div className="content w-2/3 flex flex-col gap-4">
                   <h1 className="text-xl w-fit">{val.title}</h1>
                   <h1 className="text-2xl font-semibold font-mono">
-                    $ {val.price}
+                    $ {val.price.toFixed(1)}
                   </h1>
                   <button
                     onClick={() => {
@@ -77,16 +77,20 @@ const Cart = () => {
           <div className="w-full p-7 bg-slate-200 rounded-md">
             <div className="flex w-full justify-between mb-2">
               <div>Total Amount</div>
-              <div className="font-bold text-lg">$ {totalPrice}</div>
+              <div className="font-bold text-lg">$ {totalPrice.toFixed(2)}</div>
             </div>
             <div className="flex w-full justify-between">
               <div>Delivery Charges</div>
-              <div className="font-bold text-lg">$ 10</div>
+              <div className="font-bold text-lg">
+                $ {totalPrice == 0 ? 0 : 10}
+              </div>
             </div>
             <div className="w-full h-0.5 mt-4 bg-opacity-50 bg-black"></div>
             <div className="flex w-full justify-between mt-3">
               <div className="text-xl">Grand Total</div>
-              <div className="font-bold text-2xl">$ {totalPrice + 10}</div>
+              <div className="font-bold text-2xl">
+                $ {totalPrice.toFixed(0) + totalPrice == 0 ? 0 : 10}
+              </div>
             </div>
           </div>
           <div className="mt-7">
